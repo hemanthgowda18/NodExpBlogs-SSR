@@ -2,6 +2,7 @@ const express = require("express");
 const authRouter = require("./routes/userRoutes");
 const flash = require("connect-flash");
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
 const adminRouter = require("./routes/adminRoutes");
 const authorRouter = require("./routes/authorRoutes");
 const blogRouter = require("./routes/BlogRoutes");
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
+app.use(cookieParser());
 app.get("/app/v1/welcome", (req, res) => {
   res.render("welcome");
 });
@@ -40,6 +42,25 @@ app.all("*", (req, res, next) => {
   next(err);
 });
 
-//global error handler
+// app.get("/set-cookie", (req, res) => {
+//   res.cookie("name", "hemanth", {
+//     maxAge: 60 * 1000,
+//     httpOnly: true,
+//   });
+//   res.end("cookie set");
+// });
+// app.get("/get-cookie",(req,res)=>{
+//   res.send(req.cookies.name)
+// })
+// app.get("/delete-cookie",(req,res)=>{
+//   // res.clearCookie("name")
+//   // console.log("cookie cleraed");
+//   res.cookie("name","",{
+//     maxAge:1
+//   })
+//   res.end("cookie Deleted")
+// })
+
+//global error handlers
 app.use(globalErrorControllers);
 module.exports = app;

@@ -11,6 +11,10 @@ const signupWrapper = (Model) => {
   return asyncErrorHandler(async (req, res, next) => {
     const newUser = await Model.create(req.body);
     const token = await getToken(newUser._id);
+    res.cookie("jwt",token,{
+      httpOnly:true,
+      maxAge: 24 * 60 * 60 * 1000
+    })
     res.status(201).json({
       status: "success",
       token,
@@ -42,6 +46,10 @@ const loginWrapper = (Model) => {
       next(err);
     }
     const token = await getToken(existingUser._id);
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.status(200).json({
       status: "success",
       token,
