@@ -22,7 +22,8 @@ const blogSchema = new Schema({
   image: {
     type: [String],
     default: "",
-  }
+  },
+  // _id: { type: String, required: true },
   
 });
 module.exports=model("blog",blogSchema)

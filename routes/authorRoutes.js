@@ -4,6 +4,7 @@ const {
   login,
   getSignup,
   getLogin,
+  logout,
 } = require("../controllers/authorControllers");
 
 router.post("/signup", signup);
@@ -12,5 +13,6 @@ router.get("/signup", getSignup);
 router.get("/login", getLogin);
 router.post("/signup", signup);
 router.post("/login", login);
+router.get("/logout",logout)
 
 module.exports = router;

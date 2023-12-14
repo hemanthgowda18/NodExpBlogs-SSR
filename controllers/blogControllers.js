@@ -147,6 +147,17 @@ const getByAuthor =asyncErrorHandler( async (req, res) => {
    });
  });
 
+const dashboard = (req, res) => {
+  if (req.user.role === "admin") {
+    return res.render("adminDashBoard");
+  }
+  if (req.user.role === "user") {
+    return res.render("userDashBoard");
+  }
+  if (req.user.role === "author") {
+    return res.render("authorDashBoard");
+  }
+};
 
 
 
@@ -158,5 +169,6 @@ module.exports = {
   deleteBlog,
   getByAuthor,
   getRatings,
-  postRating
+  postRating,
+  dashboard
 };

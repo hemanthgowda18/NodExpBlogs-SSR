@@ -9,7 +9,7 @@ body {
 }
 nav{
   height: 65px;
-  background-color: purple;
+  background-color: paleturquoise;
   display: flex;
   justify-content: flex-end;
   align-items: center;

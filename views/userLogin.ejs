@@ -16,15 +16,15 @@
     <nav>
       <div class="back"></div>
       <ul>
-        <li><a href="/app/v1/users/signup">Signup</a></li>
-        <li><a href="/app/v1/users/login">Login</a></li>
+        <li><a href="/app/v1/user/signup">Signup</a></li>
+        <li><a href="/app/v1/user/login">Login</a></li>
       </ul>
     </nav>
     <div class="form_container">
       <h2>Login Here for User</h2>
       <div class="error"></div>
       <div class="success"></div>
-      <form action="/app/v1/users/login" class="form login" method="post">
+      <form action="/app/v1/user/login" class="form login" method="post">
         <% if (error) { %>
         <div
           class="error alert alert-danger alert-dismissible fade show"
@@ -61,7 +61,7 @@
           <input type="password" class="input_control" name="password" />
         </div>
         <span
-          >Didn't register yet?<a href="/app/v1/users/signup">Sign up</a></span
+          >Didn't register yet?<a href="/app/v1/user/signup">Sign up</a></span
         >
         <div class="btn_container">
           <button type="submit">Submit</button>

@@ -10,9 +10,15 @@ const getLogin = (req, res) => {
   res.render("userLogin");
 };
 
+const logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.redirect("/app/v1/users/login");
+};
+
 module.exports = {
   login,
   signup,
   getSignup,
   getLogin,
+  logout
 };

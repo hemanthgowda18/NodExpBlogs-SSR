@@ -15,14 +15,14 @@
   <body>
     <nav>
       <ul>
-        <li><a href="/app/v1/users/signup">Signup</a></li>
-        <li><a href="/app/v1/users/login">Login</a></li>
+        <li><a href="/app/v1/user/signup">Signup</a></li>
+        <li><a href="/app/v1/user/login">Login</a></li>
       </ul>
     </nav>
 
     <div class="form_container">
       <h2>Sign up Here for User</h2>
-      <form action="/app/v1/users/signup" class="form signup" method="post">
+      <form action="/app/v1/user/signup" class="form signup" method="post">
         <% if (error) { %> 
         <div
           class="error alert alert-danger alert-dismissible fade show"
@@ -66,7 +66,7 @@
           <label for="" class="input_label">Confirm Password</label>
           <input type="password" class="input_control" name="confirmPassword" />
         </div>
-        <span>Already registered?<a href="/app/v1/users/login">Login</a></span>
+        <span>Already registered?<a href="/app/v1/user/login">Login</a></span>
         <div class="btn_container">
           <button type="submit">Submit</button>
           <button type="reset">Clear</button>

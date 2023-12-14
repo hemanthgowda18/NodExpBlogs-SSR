@@ -5,7 +5,7 @@ const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const adminRouter = require("./routes/adminRoutes");
 const authorRouter = require("./routes/authorRoutes");
-const blogRouter = require("./routes/BlogRoutes");
+const blogRouter = require("./routes/blogRoutes");
 const CustomError = require("./utils/CustomError");
 const globalErrorControllers = require("./controllers/globalErrorControllers");
 const app = express();
@@ -32,7 +32,7 @@ app.get("/app/v1/welcome", (req, res) => {
   res.render("welcome");
 });
 
-app.use("/app/v1/users", authRouter);
+app.use("/app/v1/user", authRouter);
 app.use("/app/v1/admin", adminRouter);
 app.use("/app/v1/author", authorRouter);
 app.use("/app/v1/blogs", blogRouter);

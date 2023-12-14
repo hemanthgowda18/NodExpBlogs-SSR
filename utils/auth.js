@@ -15,13 +15,14 @@ const signupWrapper = (Model) => {
       httpOnly:true,
       maxAge: 24 * 60 * 60 * 1000
     })
-    res.status(201).json({
-      status: "success",
-      token,
-      data: {
-        newUser,
-      },
-    });
+    res.status(303).redirect("/app/v1/blogs/dashboard")
+    // res.status(201).json({
+    //   status: "success",
+    //   token,
+    //   data: {
+    //     newUser,
+    //   },
+    // });
   });
 };
 
@@ -50,13 +51,14 @@ const loginWrapper = (Model) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({
-      status: "success",
-      token,
-      data: {
-        existingUser,
-      },
-    });
+    res.status(303).redirect("/app/v1/blogs/dashboard");
+    // res.status(200).json({
+    //   status: "success",
+    //   token,
+    //   data: {
+    //     existingUser,
+    //   },
+    // });
   });
 };
 module.exports = {
