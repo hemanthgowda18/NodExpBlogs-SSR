@@ -12,8 +12,13 @@ const {
 } = require("../controllers/blogControllers");
 
 const {auth,verifyRole}= require("../middlewares/authMiddleware");
+const multer = require("multer");
+const storage=require("../middlewares/multer")
+const upload=multer({storage:storage})
+
 
 router.get("/dashboard",auth,verifyRole(["admin","author","user"]),dashboard)
+router.post("/",auth,verifyRole(["author"]),upload.single("image"),postBlog)
 router.post("/", auth,verifyRole(["author","admin"]), postBlog);
 router.get("/", auth, getBlogs);
 // router.get("/author", auth, getByAuthor);

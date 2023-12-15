@@ -16,14 +16,14 @@ const blogSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "author",
     required: [true, "Author is Required"],
   },
   image: {
-    type: [String],
+    type: [""],
     default: "",
   },
-  // _id: { type: String, required: true },
+
   
 });
 module.exports=model("blog",blogSchema)

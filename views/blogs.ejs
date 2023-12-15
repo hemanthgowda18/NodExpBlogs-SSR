@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/css/style.css">
+     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <nav>
+      <nav>
      <div class="back"><a href="/app/v1/user/dashboard">Home</a></div>
     <ul>
-        <li><a href="/app/v1/blogs">Get Blogs</a></li>
         <li><a href="/app/v1/user/logout">Logout</a></li>
     </ul>
 </nav>
 <main>
-    <h1>User Dash Board</h1>
+    <div class="blogs">
+        <% blogs.forEach(blog=>{%>
+        <div class="blog">
+        <h2 class="blog-title"> <%= blog.title%> </h2>
+        <p><%= blog.snippet%></p>
+        <p>By-<%= blog.author.name%></p>
+      </div>
+      <%})%>
+    </div>
 </main>
 </body>
 </html>
