@@ -7,11 +7,11 @@ let ratingSchema=new Schema({
         max:[5,"please provide ratings below 5"],
         default:1
     },
-    userId:{
+    user:{
         type:Schema.Types.ObjectId,
         ref:"user"
     },
-    blogId:{
+    blog:{
         type:Schema.Types.ObjectId,
         ref:"blog"
     },
