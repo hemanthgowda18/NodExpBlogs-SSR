@@ -5,7 +5,7 @@ const asyncErrorHandler = require("../utils/asyncErrorHandler");
 const getBlogsByAuthor = asyncErrorHandler(async (req, res) => {
   let author = req.user._id;
   let blogs = await Blog.find({ author: author }).populate("author");
-  return res.render("blogs", { blogs });
+  return res.render("blogsByAuthor", { blogs });
 });
 
 const postBlog = asyncErrorHandler(async (req, res) => {
@@ -27,11 +27,10 @@ const postBlog = asyncErrorHandler(async (req, res) => {
   });
 });
 
-
 const getBlogs = asyncErrorHandler(async (req, res) => {
   let search = req.query.search || "";
   let page = req.query.page * 1 || 1;
-  let limit = req.query.limit * 1 || 10 ;
+  let limit = req.query.limit * 1 || 10;
   // let author = req.query.author || "";
   let skip = (page - 1) * limit;
   let sort = req.query.sort || "rating";
@@ -39,28 +38,23 @@ const getBlogs = asyncErrorHandler(async (req, res) => {
   sort && sort.split(",").join(" ");
   const blogs = await Blog.find({ title: { $regex: search, $options: "i" } })
     .populate("author")
-    // .where("author")
-    // .in([author])
     .skip(skip)
     .limit(limit)
     .sort(sort);
   let totalBlogs = await Blog.countDocuments();
-  // res.status(200).json({
-  //   status: "success",
-  //   page,
-  //   limit,
-  //   totalBlogs,
-  //   data: {
-  //     blogs,
-  //   },
-  // });
-    res.render("blogs", {
+  res.render("blogs", {
     page,
     limit,
     totalBlogs,
     blogs,
   });
 });
+
+// const getBlogByAuthor = asyncErrorHandler(async (req, res) => {
+//   const { id } = req.params;
+//   const blog = await Blog.findById(id);
+//   res.render("blogByAuthor", { blog});
+// });
 
 const getBlog = asyncErrorHandler(async (req, res) => {
   const { id } = req.params;
@@ -69,53 +63,39 @@ const getBlog = asyncErrorHandler(async (req, res) => {
   res.render("blog", { blog, ratings });
 });
 
+const getUpdateBlog = asyncErrorHandler(async (req, res) => {
+  let id = req.params.id;
+  let blog = await Blog.findById(id);
+ res.render("updateBlog",{blog})
+
+});
+
 const updateBlog = asyncErrorHandler(async (req, res) => {
-  const { title, description, snippet, image, ratings } = req.body;
+  const { id } = req.params;
+  // const { title, description, snippet } = req.body;
   if (req.user.role === "author") {
     const updatedBlog = await Blog.findOneAndUpdate(
       { _id: id },
       {
         $set: {
-          title: title,
-          snippet: snippet,
-          description: description,
-          image: image,
+          ...req.body,
+          image: req.file,
         },
       },
       { new: true, runValidators: true }
     );
-
-    return res.status(200).json({
-      status: "success",
-      data: {
-        updatedBlog,
-      },
-    });
-  }
-  if (req.user.role === "user") {
-    const updatedBlog = await Blog.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: { ratings: ratings },
-      },
-      { new: true, runValidators: true }
-    );
-
-    return res.status(200).json({
-      status: "success",
-      data: {
-        updatedBlog,
-      },
-    });
+    return res.redirect("/app/v1/blogs/author");
   }
 });
 
 const deleteBlog = asyncErrorHandler(async (req, res) => {
-  await Blog.findByIdAndDelete(req.params.id);
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+  const { id } = req.params;
+  await Blog.findByIdAndDelete(id);
+  // res.status(204).json({
+  //   status: "success",
+  //   data: null,
+  // });
+  return res.redirect("/app/v1/blogs/author");
 });
 
 const getByAuthor = asyncErrorHandler(async (req, res) => {
@@ -129,14 +109,13 @@ const getByAuthor = asyncErrorHandler(async (req, res) => {
   });
 });
 
-
 let postRating = asyncErrorHandler(async (req, res) => {
   let user = req.user._id;
   let blog = req.params.id;
-  let duplicateRating=await Rating.findOne({user:user,blog:blog})
-  if(duplicateRating){
-    duplicateRating.ratings=req.body.ratings
-    await duplicateRating.save()
+  let duplicateRating = await Rating.findOne({ user: user, blog: blog });
+  if (duplicateRating) {
+    duplicateRating.ratings = req.body.ratings;
+    await duplicateRating.save();
     return res.redirect("/app/v1/blogs/ratings/:id");
   }
   await Rating.create({
@@ -146,7 +125,6 @@ let postRating = asyncErrorHandler(async (req, res) => {
   });
   res.redirect("/app/v1/blogs/ratings/:id");
 });
-
 
 // let getRatings = asyncErrorHandler(async (req, res) => {
 //   let blogId = req.params.id;
@@ -181,5 +159,6 @@ module.exports = {
   getByAuthor,
   postRating,
   dashboard,
-  getBlogsByAuthor
+  getBlogsByAuthor,
+  getUpdateBlog,
 };
