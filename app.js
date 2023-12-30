@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const adminRouter = require("./routes/adminRoutes");
+const paymentRouter=require("./routes/stripeRoutes")
 const authorRouter = require("./routes/authorRoutes");
 const blogRouter = require("./routes/blogRoutes");
 const CustomError = require("./utils/CustomError");
@@ -38,6 +39,7 @@ app.use("/app/v1/user", authRouter);
 app.use("/app/v1/admin", adminRouter);
 app.use("/app/v1/author", authorRouter);
 app.use("/app/v1/blogs", blogRouter);
+app.use("/app/v1/payment", paymentRouter);
 
 app.all("*", (req, res, next) => {
   let err = new CustomError(404, "page not found");

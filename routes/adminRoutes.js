@@ -13,6 +13,6 @@ router.get("/signup", getSignup);
 router.get("/login", getLogin);
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/logout",logout)
+router.get("/logout", logout);
 
 module.exports = router;

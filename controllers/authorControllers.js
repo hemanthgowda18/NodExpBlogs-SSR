@@ -19,5 +19,5 @@ module.exports = {
   signup,
   getSignup,
   getLogin,
-  logout
+  logout,
 };

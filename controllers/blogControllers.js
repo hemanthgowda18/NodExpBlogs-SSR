@@ -18,6 +18,7 @@ const postBlog = asyncErrorHandler(async (req, res) => {
     description: req.body.description,
     image: req.file,
     author: user._id,
+    price: req.body.price,
   });
   res.status(201).json({
     status: "success",
@@ -30,7 +31,7 @@ const postBlog = asyncErrorHandler(async (req, res) => {
 const getBlogs = asyncErrorHandler(async (req, res) => {
   let search = req.query.search || "";
   let page = req.query.page * 1 || 1;
-  let limit = req.query.limit * 1 || 10;
+  let limit = req.query.limit * 1 || 2;
   // let author = req.query.author || "";
   let skip = (page - 1) * limit;
   let sort = req.query.sort || "rating";
@@ -47,6 +48,9 @@ const getBlogs = asyncErrorHandler(async (req, res) => {
     limit,
     totalBlogs,
     blogs,
+    totalPages: Math.ceil(totalBlogs / limit),
+    previous: page - 1,
+    next: page + 1,
   });
 });
 
@@ -56,35 +60,32 @@ const getBlogs = asyncErrorHandler(async (req, res) => {
 //   res.render("blogByAuthor", { blog});
 // });
 
-
-
 const getBlog = asyncErrorHandler(async (req, res) => {
   const { id } = req.params;
   const blog = await Blog.findById(id).populate("author");
   const ratings = await Rating.find({ blog: blog._id }).populate("user");
-      if (req.user.role === "user") {
-        res.locals.eachBlog = blog;
-        res.locals.ratings = ratings;
-        res.render("blog",{blog,ratings});
-      }
-      if (req.user.role === "author") {
-        res.locals.eachBlog = blog;
-        res.locals.ratings = ratings;
-        res.render("blogsByAuthor",{blog});
-      }
+  if (req.user.role === "user") {
+    res.locals.eachBlog = blog;
+    res.locals.ratings = ratings;
+    res.render("blog", { blog, ratings });
+  }
+  if (req.user.role === "author") {
+    res.locals.eachBlog = blog;
+    res.locals.ratings = ratings;
+    res.render("blogsByAuthor", { blog });
+  }
 
-      if (req.user.role === "admin") {
-        res.locals.eachBlog = blog;
-        res.locals.ratings = ratings;
-        res.render("adminBlogs",{blog});
-      }
+  if (req.user.role === "admin") {
+    res.locals.eachBlog = blog;
+    res.locals.ratings = ratings;
+    res.render("adminBlogs", { blog });
+  }
 });
 
 const getUpdateBlog = asyncErrorHandler(async (req, res) => {
   let id = req.params.id;
   let blog = await Blog.findById(id);
- res.render("updateBlog",{blog})
-
+  res.render("updateBlog", { blog });
 });
 
 const updateBlog = asyncErrorHandler(async (req, res) => {
@@ -108,12 +109,12 @@ const updateBlog = asyncErrorHandler(async (req, res) => {
 const deleteBlog = asyncErrorHandler(async (req, res) => {
   const { id } = req.params;
   await Blog.findByIdAndDelete(id);
-   if (req.user.role === "author") {
-     res.redirect("/app/v1/blogs/author");
-   }
-   if (req.user.role === "admin") {
-     res.redirect("/app/v1/blogs");
-   }
+  if (req.user.role === "author") {
+    res.redirect("/app/v1/blogs/author");
+  }
+  if (req.user.role === "admin") {
+    res.redirect("/app/v1/blogs");
+  }
 });
 
 const getByAuthor = asyncErrorHandler(async (req, res) => {
